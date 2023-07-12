@@ -1,7 +1,6 @@
 import React, { PureComponent } from "react";
 import logo from "../../images/dictionary1Logo.jpg";
 import "./style.scss";
-import { array } from "prop-types";
 
 export class Component extends PureComponent {
   render() {
