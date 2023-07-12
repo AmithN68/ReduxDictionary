@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react'
-import Container from './store/container/Container'
+import Container from './store/container'
 
 export class App extends PureComponent {
   render() {

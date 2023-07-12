@@ -1,8 +1,8 @@
 import React, { PureComponent } from "react";
 import "./style.scss";
-import logo from "../../images/dictionary1Logo.jpg";
 import { connect } from "react-redux";
 import { fetchFailure, fetchRequest, fetchSuccess } from "../fetchData";
+import Component from "./Component";
 
 const mapStateToProps = state => {
   return {
@@ -23,10 +23,11 @@ const mapDispatchToProps = dispatch => {
 class Container extends PureComponent {
   state = {
     word: "",
+    // data:this.props.data,
     recent: [],
   };
   componentDidMount = () => {
-    this.fetchData();
+    // this.fetchData();
   };
   fetchData = () => {
     const { fetchFailure, fetchRequest, fetchSuccess } = this.props;
@@ -37,6 +38,8 @@ class Container extends PureComponent {
       .then(res => {
         fetchSuccess(res);
         this.setState({ recent: [...this.state.recent, Type_word] });
+        localStorage.setItem("data", Type_word);
+        const arr = [...window.localStorage.getItem("data")];
       })
       .catch(err => fetchFailure(err.message));
   };
@@ -51,60 +54,64 @@ class Container extends PureComponent {
     const { data } = this.props;
     const { recent } = this.state;
     return (
-      <section className="navBlock">
-        <article className="nav">
-          <aside>
-            <div>
-              <img src={logo} alt="logo" />
-            </div>
-            <div>
-              <input
-                type="search"
-                name="Type_word"
-                id=""
-                placeholder="search the word"
-                onChange={this.handleChange}
-              />
-              <button onClick={this.handleSubmit}>Search</button>
-            </div>
-          </aside>
-        </article>
-        <article className="main">
-          <aside className="aside1">
-            <div>
-              {data.map((val, ind) => {
-                return (
-                  <div key={ind}>
-                    <h1>Word : {val.word}</h1>
-                    <div className="div">
-                      {val.meanings.map((val, ind) => {
-                        return (
-                          <div key={ind}>
-                            <h3>PartOfSpeech : {val.partOfSpeech}</h3>
-                            <h4>
-                              Definition : {val.definitions[0].definition}
-                            </h4>
-                          </div>
-                        );
-                      })}
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          </aside>
-          <aside className="aside2">
-            <h1>Recent</h1>
-            {recent.map(val => {
-              return (
-                <div key={val}>
-                  <h4>{val}</h4>
-                </div>
-              );
-            })}
-          </aside>
-        </article>
-      </section>
+      // <section className="navBlock">
+      //   <article className="nav">
+      //     <aside>
+      //       <div>
+      //         <img src={logo} alt="logo" />
+      //       </div>
+      //       <div>
+      //         <input
+      //           type="search"
+      //           name="Type_word"
+      //           id=""
+      //           placeholder="search the word"
+      //           onChange={this.handleChange}
+      //         />
+      //         <button onClick={this.handleSubmit}>Search</button>
+      //       </div>
+      //     </aside>
+      //   </article>
+      //   <article className="main">
+      //     <aside className="aside1">
+      //       <div>
+      //         {data.map((val, ind) => {
+      //           return (
+      //             <div key={ind}>
+      //               <h1>Word : {val.word}</h1>
+      //               <div className="div">
+      //                 {val.meanings.map((val, ind) => {
+      //                   return (
+      //                     <div key={ind}>
+      //                       <h3>PartOfSpeech : {val.partOfSpeech}</h3>
+      //                       <h4>
+      //                         Definition : {val.definitions[0].definition}
+      //                       </h4>
+      //                     </div>
+      //                   );
+      //                 })}
+      //               </div>
+      //             </div>
+      //           );
+      //         })}
+      //       </div>
+      //     </aside>
+      //     <aside className="aside2">
+      //       <h1>Recent</h1>
+      //       {recent.map(val => {
+      //         return (
+      //           <div key={val}>
+      //             <h4>{val}</h4>
+      //           </div>
+      //         );
+      //       })}
+      //     </aside>
+      //   </article>
+      // </section>
+      <Component {...this.state}
+        handleChange={this.handleChange}
+        handleSubmit={this.handleSubmit}
+        data={this.props.data} />
     );
   }
 }
